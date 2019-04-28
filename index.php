@@ -33,11 +33,12 @@ let messagesCount = 0
 
 function ajax_get(url, callback) {
   var xhr = new XMLHttpRequest()
+      xhr.responseType = 'json'
       xhr.open("GET", url, true)
       xhr.send()
       xhr.onreadystatechange = function() {
           if (xhr.readyState == 4 && xhr.status == 200)
-              callback(xhr.responseText)
+              callback(xhr.response)
       }
 }
 
@@ -58,8 +59,8 @@ function send() {
 }
 //check for new messages every second
 setInterval(function(){ 
-    ajax_get('/?newMessages=' + messagesCount, function(response){
-        let newMessages = JSON.parse(response)
+    ajax_get('/?newMessages=' + messagesCount, function(response) {
+        let newMessages = response
         for(let i = 0; i < newMessages.length; i++) {
             document.getElementById('messages').innerHTML += newMessages[i] + "<br>"
             messagesCount++
